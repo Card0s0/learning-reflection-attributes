@@ -1,4 +1,4 @@
 *.exe
 *.dll
-obj\
-bin\
+obj/
+bin/
