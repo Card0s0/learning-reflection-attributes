@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace ConsoleApp1
@@ -16,7 +17,8 @@ namespace ConsoleApp1
 
             var methodsNotStatics = methodsClass.Where(m => !m.IsStatic).ToList();
 
-
+            Console.WriteLine();
+            Console.WriteLine("Métodos Publicos com ou sem Paramero com String");
             foreach (var method in methodsNotStatics)
             {
                 var parameters = method.GetParameters();
@@ -32,28 +34,27 @@ namespace ConsoleApp1
                 Console.WriteLine(method.Name);
             }
 
+            Console.WriteLine();
             Console.WriteLine("Escolha um metodo para executar: ");
             var choosedMethod = Console.ReadLine();
 
             var choosedMethodClass = typeClass.GetMethod(choosedMethod);
             var parametersFromChoosedMethod = choosedMethodClass.GetParameters();
 
-            var parametersInput = "";
-
+            Console.WriteLine();
+            var listOfParameterValue = new List<string>();
             foreach (var parameter in parametersFromChoosedMethod)
             {
                 Console.WriteLine("Digite um valor: " + parameter.Name + " como parametro");
                 var input = Console.ReadLine();
 
-                parametersInput = (parametersInput == "") ? input : "," + input;
+                listOfParameterValue.Add(input.ToString());
             }
-
-            var objectParameter = new object[]{parametersInput};
+            object[] objectParameter = listOfParameterValue.ToArray();
 
             var instanceClass = Activator.CreateInstance(typeClass);
-
-            var returnMethodInvoke = choosedMethodClass.Invoke(instanceClass, (parametersInput == "") ? null : objectParameter);
-
+            var returnMethodInvoke = choosedMethodClass.Invoke(instanceClass, objectParameter);
+            Console.WriteLine();
             Console.WriteLine(returnMethodInvoke);
 
             Console.ReadLine();
@@ -92,8 +93,6 @@ namespace ConsoleApp1
         {
             return "Private";
         }
-
-
     }
 
 }
